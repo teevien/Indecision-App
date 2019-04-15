@@ -1,103 +1,38 @@
-// import './utils.js';
-// import {square, add} from './utils.js'
-
-// console.log('app is running!!');
-// console.log(square(4));
-// console.log(add(1,2));
-
-// import subtract, {isAdult, canDrink} from './newPerson.js';
-// import validator from 'validator';
-// console.log(validator.isEmail('test@gmail.com'));
-
-// console.log(isAdult(18));
-// console.log(canDrink(20));
-// console.log(subtract(10,3));
-
-// install --> import --> then use
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import IndecisionApp from './components/IndecisionApp.js';
+import { Provider } from 'react-redux'; // 1. allows us to provide the store to all of the components that make up our app
+import AppRouter from './routers/AppRouter';
+import configureStore from './store/configureStore';
+import { addExpense } from './actions/expenses';
+import { setTextFilter } from './actions/filters';
+import getVisibleExpenses from './selectors/expenses';
+import 'react-dates/lib/css/_datepicker.css';
 import 'normalize.css/normalize.css';
 import './styles/style.scss';
 
-// const template = React.createElement('p', {}, 'testing');
-// const template = <p>this is jsx from webpack</p> // babel can now run this as JSX and convert it
-// ReactDOM.render(template, document.getElementById('app'));
+const store = configureStore(); // make a call to the function which will return our store object, will pass into provider
+// store.subscribe(() => {
+//     console.log(store.getState());
+// })
 
-// react components MUST have render
-// pass data(PROPS) by defining them WITHIN the component element <Header /> and then accessing them within the component using this.props.title
-// const obj = {
-//     name: 'Teresa',
-//     getName() {
-//         return this.name;
-//     }
-// }
-// const getName = obj.getName.bind({ name: 'Andrew'});
-// console.log(getName());
+store.dispatch(addExpense({ description: 'Water Bill', amount: 4500 }));
+store.dispatch(addExpense({ description: 'Gas Bill', createdAt: 1000 }));
+store.dispatch(addExpense({ description: 'Rent', amount: 109500 }));
+// store.dispatch(setTextFilter('water'));
 
+// setTimeout(() => {
+//     store.dispatch(setTextFilter('bill'));
+// }, 3000);
 
-// STATELESS FUNCTIONAL COMPONENT
-// const User = (props) => {
-//     return (
-//         <div>
-//             <p>Name: {props.name}</p>
-//             <p>Age: {props.age}</p>
-//         </div>
-//     )
-// }
-// ReactDOM.render(<User name='Teresa' age={26}/>, document.getElementById('app'));
+const state = store.getState();
+const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
+console.log(visibleExpenses);
 
-// const template =  (
-//     <div>
-//         <h1>Title</h1>
-//         <Header />
-//         <Action />
-//         <Options />
-//         <AddOption />
-//     </div>
-// )
-// ReactDOM.render(template, document.getElementById('app'));
-const Layout = (props) => {
-    return (
-        <div>
-            <p>Header</p>
-            {props.children}
-            <p>Footer</p>
-        </div>
-    );
-};
+const jsx = (
+    // 2. wrap the app in the provider and pass in the store variable as props
+    <Provider store={store}>
+        <AppRouter />
+    </Provider>
+);
 
-// const template = (
-//     <div>
-//         <h1>Page Title</h1>
-//         <p>this is my page</p>
-//     </div>
-// );
-
-ReactDOM.render(<IndecisionApp />, document.getElementById('app'))
-
-// class OldSyntax {
-//     constructor() {
-//         this.name='Mike';
-//         this.getGreeting = this.getGreeting.bind(this);
-//     }
-//     getGreeting() {
-//         return `hi my name is ${this.name}.`;
-//     }
-// }
-// const oldSyntax = new OldSyntax();
-// const getGreeting = oldSyntax.getGreeting;
-// console.log(getGreeting());
-
-//--------------------------
-
-// class NewSyntax {
-//     name = 'Jen';
-//     getGreeting = () => {
-//         return `hi my name is ${this.name}`
-//     }
-// }
-// const newSyntax = new NewSyntax();
-// const newGetGreeting = newSyntax.getGreeting;
-// console.log(newGetGreeting());
+ReactDOM.render(jsx, document.getElementById('app'))

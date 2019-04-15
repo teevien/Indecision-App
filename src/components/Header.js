@@ -1,29 +1,33 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-// CHILD - HEADER
-const Header = (props) => (
-        <div className="header">
-            <div className="container">
-                <h1 className="header__title">{props.title}</h1>
-                {props.subtitle && <h2 className="header__subtitle">{props.subtitle}</h2>}
-            </div>
-        </div>
+const Header = () => (
+    <div>
+        <h1>
+            Expensify
+  </h1>
+        <NavLink
+            activeClassName="active"
+            ariaCurrent="true"
+            to="/"
+        >
+            Home
+  </NavLink>
+        <NavLink
+            activeClassName="active"
+            ariaCurrent="true"
+            to="/create"
+        >
+            Add Expense
+  </NavLink>
+        <NavLink
+            activeClassName="active"
+            ariaCurrent="true"
+            to="/help"
+        >
+            Help
+  </NavLink>
+    </div>
 );
 
-Header.defaultProps = {
-    title: 'Indecision'
-};
-
-// class Header extends React.Component {
-//     render() {
-// console.log(this.props);
-//         return (
-//             <div>
-//                 <h1>{this.props.title}</h1>
-//                 <h2>{this.props.subtitle}</h2>
-//             </div>
-//         );
-//     };
-// };
-
-export default Header
+export default Header;

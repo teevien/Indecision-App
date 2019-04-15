@@ -1,9 +1,5 @@
 @import './base/settings';
 @import './base/base';
-@import './components/header';
-@import './components/container';
-@import './components/button';
-@import './components/widget';
-@import './components/option';
-@import './components/addOption';
-@import './components/modal';
+@import '../components/header';
+@import '../components/expenseListFilters';
+@import '../components/expenseForm';
